@@ -5,7 +5,7 @@ $DshHome = Join-Path $Root "dsh-home"
 $ProfileDir = Join-Path $DshHome "profiles\web"
 . (Join-Path $Root "windows-lib.ps1")
 
-$env:PNPM_CONFIG_AUTO_INSTALL_PEERS = "true"
+$env:PNPM_CONFIG_AUTO_INSTALL_PEERS = "false"
 $env:NODE_OPTIONS = "--max-old-space-size=8192"
 
 function Assert-Node {
@@ -37,7 +37,7 @@ function Install-LocalDsh {
   Write-Host "Installing @deepseek-ai/dsh locally into $Root ..."
   Push-Location $Root
   try {
-    Invoke-Native $Pnpm @("install")
+    Invoke-Native $Pnpm @("install", "--config.auto-install-peers=false")
   } finally {
     Pop-Location
   }
@@ -57,7 +57,7 @@ function Install-WebProfile {
   Write-Host "Installing web profile plugins into $ProfileDir ..."
   Push-Location $ProfileDir
   try {
-    Invoke-Native $Pnpm @("install")
+    Invoke-Native $Pnpm @("install", "--config.auto-install-peers=false")
   } finally {
     Pop-Location
   }

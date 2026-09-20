@@ -4,5 +4,13 @@
   "description": "Local install of dsh 0.1.2-rc.1 so Windows does not need a global PATH shim",
   "dependencies": {
     "@deepseek-ai/dsh": "0.1.2-rc.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "@deepseek-ai/dsh": "0.1.2-rc.1",
+      "@deepseek-ai/dsh-llm": "0.1.2-rc.1",
+      "@deepseek-ai/dsh-llm-deepseek": "0.1.2-rc.1",
+      "@deepseek-ai/dsh-llm-pi-ai": "0.1.2-rc.1"
+    }
   }
 }

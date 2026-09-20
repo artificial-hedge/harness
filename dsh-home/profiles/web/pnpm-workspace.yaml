@@ -2,7 +2,7 @@ packages:
   - .
 
 nodeLinker: hoisted
-autoInstallPeers: true
+autoInstallPeers: false
 supportedArchitectures:
   os:
     - darwin
