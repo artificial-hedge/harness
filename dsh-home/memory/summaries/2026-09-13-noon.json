@@ -1,0 +1,38 @@
+{
+  "summary": "今天把 Nautica stat-max 和 intraday tournament 的纸面回测跑完，也留好了 PNG 和机器摘要；结果暂时都没到晋级线，intraday 还直接判定失败。随后补清审计脚本并非完全只读、复现命令也校准了，最后把 Harness 语言切到英文，整体算是收了尾，只是后续还要继续找合格策略。",
+  "works": [
+    {
+      "title": "完成两路纸面回测与对比",
+      "points": [
+        "跑完 Nautica stat-max 与 intraday tournament 的新一轮纸面回测",
+        "生成 PNG 对比图和机器可读摘要",
+        "Nautica 未达到 promotion 条件，intraday tournament 判定失败"
+      ]
+    },
+    {
+      "title": "补正审计只读性说明",
+      "points": [
+        "明确 `--no-write` 模式仍会写入配置和账本产物",
+        "说明既有脏文件早于本次运行，无法仅凭状态归属"
+      ]
+    },
+    {
+      "title": "整理证据复现与重跑路径",
+      "points": [
+        "说明 PNG 与 summary 只是生成的证据文件",
+        "标出可直接重跑的底层审计与 tournament 命令",
+        "校准 intraday 重跑命令及 wrapper 的 `PYTHONPATH` 要求"
+      ]
+    },
+    {
+      "title": "统一 Harness 界面语言设置",
+      "points": [
+        "将 DeepSeek Harness locale 明确设为 English",
+        "添加注释以触发实时设置刷新",
+        "notebook 默认跟随英文，除非浏览器本地切换过语言"
+      ]
+    }
+  ],
+  "generatedAt": 1789281045803,
+  "cached": false
+}

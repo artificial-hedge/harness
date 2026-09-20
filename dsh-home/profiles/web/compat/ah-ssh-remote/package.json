@@ -1,0 +1,8 @@
+{
+  "name": "ah-ssh-remote",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": { "default": "./index.js" }
+  }
+}

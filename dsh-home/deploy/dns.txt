@@ -1,0 +1,20 @@
+# DNS for harness.artificialhedge.co
+# DSH binds 127.0.0.1:3080 only. A public hostname needs a tunnel or
+# a local reverse proxy. Do not point the apex at this Mac.
+
+# Recommended after: ~/.dsh/deploy/create-harness-tunnel.sh
+# Type   Name      Target                              Proxy
+# CNAME  harness   <TUNNEL_UUID>.cfargotunnel.com      Proxied (orange cloud)
+
+# Fallback only if you also run a 443 reverse proxy on this Mac
+# (home ISPs often block inbound 443; this is not sufficient alone):
+# Type   Name      Target
+# A      harness   223.181.118.113
+
+# Leave these on the existing site/Vercel edge:
+# A      @         216.198.79.1
+# CNAME  www       artificialhedge.co.  (or current Vercel target)
+
+# Optional
+# AAAA   harness   <public IPv6 if you have one>
+# No MX/TXT required for the harness itself.

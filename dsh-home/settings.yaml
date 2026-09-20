@@ -1,0 +1,279 @@
+locale:
+  preference: en
+ui-onboarding:
+  welcomeNoticeVersion: 2026-08-13.1
+llm-pi-ai:
+  providers:
+    camelstream:
+      displayName: Artificial Hedge
+      apiKeyEnv: CAMELSTREAM_API_KEY
+      api: openai-completions
+      baseURL: https://stream.camelai.com/v1
+      headers:
+        User-Agent: ArtificialHedgeHarness/1.0
+      defaultMaxTokens: 65536
+      models:
+        - id: auto
+          name: Solar Frontier
+          contextWindow: 131072
+          maxTokens: 65536
+          reasoningEfforts:
+            'off': null
+            minimal: low
+            low: low
+            medium: medium
+            high: high
+            max: max
+    vercel-ai-gateway:
+      apiKeyEnv: AI_GATEWAY_API_KEY
+      models:
+        - id: deepseek/deepseek-v4.1-flash
+          name: DeepSeek V4.1 Flash
+        - id: deepseek/deepseek-v4-pro-0813
+          name: DeepSeek V4 Pro 0813
+        - id: deepseek/deepseek-v4-flash
+          name: DeepSeek V4 Flash
+        - id: deepseek/deepseek-v4-flash-0731
+          name: DeepSeek V4 Flash 0731
+        - id: deepseek/deepseek-v4-pro
+          name: DeepSeek V4 Pro
+        - id: anthropic/claude-fable-5
+          name: Claude Fable 5
+        - id: alibaba/qwen-3-14b
+          name: Qwen3-14B
+        - id: alibaba/qwen-3-235b
+          name: Qwen3 235B A22B
+        - id: alibaba/qwen-3-30b
+          name: Qwen3-30B-A3B
+        - id: alibaba/qwen-3-32b
+          name: Qwen 3 32B
+        - id: alibaba/qwen-3.6-max-preview
+          name: Qwen 3.6 Max Preview
+        - id: alibaba/qwen3-235b-a22b-thinking
+          name: Qwen3 VL 235B A22B Thinking
+        - id: alibaba/qwen3-coder
+          name: Qwen3 Coder 480B A35B Instruct
+        - id: alibaba/qwen3-coder-30b-a3b
+          name: Qwen 3 Coder 30B A3B Instruct
+        - id: alibaba/qwen3-coder-next
+          name: Qwen3 Coder Next
+agent-default-model:
+  provider: camelstream
+  model: auto
+agent-presets:
+  default: cordis-max
+model-router:
+  models:
+    auto:
+      order:
+        - camelstream
+      active: camelstream
+    deepseek-v4.1-flash:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    deepseek-v4-pro-0813:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    deepseek-v4-flash:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    deepseek-v4-flash-0731:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    deepseek-v4-pro:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    claude-fable-5:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    qwen-3-14b:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    qwen-3-235b:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    qwen-3-30b:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    qwen-3-32b:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    qwen-3.6-max-preview:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    qwen3-235b-a22b-thinking:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    qwen3-coder:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    qwen3-coder-30b-a3b:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+    qwen3-coder-next:
+      order:
+        - vercel-ai-gateway
+      active: vercel-ai-gateway
+  showQuickSwitch: false
+  ignoreModelIdPrefix: true
+  modelSort: custom
+  modelOrder:
+    - auto
+    - deepseek-v4.1-flash
+    - deepseek-v4-pro-0813
+    - deepseek-v4-flash
+    - deepseek-v4-flash-0731
+    - deepseek-v4-pro
+    - claude-fable-5
+    - qwen-3-14b
+    - qwen-3-235b
+    - qwen-3-30b
+    - qwen-3-32b
+    - qwen-3.6-max-preview
+    - qwen3-235b-a22b-thinking
+    - qwen3-coder
+    - qwen3-coder-30b-a3b
+    - qwen3-coder-next
+  recentlyUsed:
+    auto: 1789285164855
+ah-seat:
+  speed: intense
+  thinking: max
+  reasoningMode: both
+dsh-think-level:
+  defaults:
+    - provider: camelstream
+      model: auto
+      effort: max
+dsh-gen-limit:
+  limits:
+    - provider: camelstream
+      model: auto
+      max: 10
+ah-fleet-pin:
+  prefer: auto
+  maxRedraws: 3
+ah-ssh-remote:
+  alias: ah-remote
+  user: me
+  hostname: 100.116.120.51
+  remotePath: D:\dipcatcher
+dsh-tool-disclosure:
+  defer:
+    - use_agent
+    - browser_automation_develop
+    - scholar_search
+    - render_ui
+    - ask_agent
+    - session_env
+    - browser_recipe_run
+    - validate_dsh_ui
+    - mcp_list
+    - nb_run_cell
+    - browser_crawl
+    - nb_edit_and_run_cell
+    - memory_note
+    - x_search
+    - read_page
+    - mcp_call
+    - scholar_abstract
+    - calendar_add
+    - browser_opencli_run
+    - memory_external
+    - browser_automation_search
+    - memory_recall
+    - browser_open
+    - browser_userscript_run
+    - nb_edit_cell
+    - browser_automation_run
+    - browser_script_validate
+    - mcphub_status
+    - nb_save
+    - memory_log
+    - browser_script_run_builtin
+    - nb_run_all
+    - browser_opencli_catalog
+    - nb_revert_cell
+    - memory_user
+    - memory_read
+    - nb_kernel_select
+    - nb_add_cell
+    - browser_type
+    - codegraph_impact
+    - nb_cell_history
+    - mcphub_resync
+    - nb_apply_suggestion
+    - memory_reflect
+    - browser_click
+    - calendar_done
+    - memory_consolidate
+    - nb_error_context
+    - codegraph_explore
+    - nb_context
+    - browser_scroll
+    - nb_inspect_object
+    - codegraph_callers
+    - nb_move_cell
+    - codegraph_node
+    - memory_maintain
+    - calendar_remove
+    - nb_set_cwd
+    - codegraph_affected
+    - nb_open
+    - browser_status
+    - browser_script_catalog
+    - nb_new
+    - browser_install
+    - codegraph_callees
+    - nb_delete_cell
+    - codegraph_search
+    - nb_kernel_restart
+    - calendar_list
+    - browser_opencli_status
+    - nb_kernel_restart_and_clear
+    - codegraph_status
+    - nb_list_vars
+    - nb_list
+    - nb_kernel_list
+    - browser_close
+    - browser_read
+    - browser_screenshot
+    - nb_clear_outputs
+    - nb_kernel_restart_and_run_all
+    - memory_status
+    - nb_get
+    - codegraph_sync
+    - codegraph_files
+    - nb_kernel_interrupt
+browser:
+  automationMode: unrestricted
+  autoInstall: true
+dsh-context:
+  defaultGranularity: turn
+  defaultTrendMode: delta
+  defaultFileSort: latest
+subagent-model-selection:
+  enabled: true
+  allowedModels:
+    - provider: model-router
+      model: auto
+    - provider: camelstream
+      model: auto
+permission:
+  defaultPreset: danger-full-access
+ui-chat:
+  transcriptView: normal

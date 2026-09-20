@@ -1,0 +1,50 @@
+{
+  "summary": "今天把 GARCHVol 的 APARCH/FIGARCH 校验、JackknifePlus 区间缩放和研究代理测试都推进得很扎实，相关定向测试与静态检查基本通过；还查清了全量测试慢点和 pytest-cov 的兼容性问题，没有贸然改弱代码。另完成了 Codex 网关配置清理。整体进展很好，只是完整测试仍需一点时间收尾。",
+  "works": [
+    {
+      "title": "完善GARCH波动模型校验",
+      "points": [
+        "增加 APARCH/FIGARCH 可接受性检查",
+        "补充失败即关闭的诊断机制",
+        "完成 FIGARCH 零阶验证与多步模拟回退",
+        "配置测试和契约测试均已通过"
+      ]
+    },
+    {
+      "title": "修复JackknifePlus区间缩放",
+      "points": [
+        "将留一法位置值转换回测试时尺度",
+        "同步还原保序半宽度的原始单位",
+        "定向 JackknifePlus 与相关 CV+ 测试通过"
+      ]
+    },
+    {
+      "title": "完成研究与质量验证排查",
+      "points": [
+        "研究代理测试 9/9 通过",
+        "JackknifePlus 测试 7/7 通过",
+        "Doctor、研究验证、compileall、Ruff、mypy 均通过",
+        "研究代理覆盖率达到 85.48%"
+      ]
+    },
+    {
+      "title": "定位全量测试慢点与覆盖率问题",
+      "points": [
+        "确认耗时节点主要来自 Northset 与 CLI 测试",
+        "分块测试均通过，未发现实际失败",
+        "定位 pytest-cov 与 NumPy 的收集兼容问题",
+        "完整测试仍在按串行分块继续执行"
+      ]
+    },
+    {
+      "title": "清理Codex网关提供商配置",
+      "points": [
+        "移除 Vercel AI Gateway 提供商选择",
+        "删除对应的模型提供商配置块",
+        "编辑前后均完成目标配置核验"
+      ]
+    }
+  ],
+  "generatedAt": 1789885887419,
+  "cached": false
+}

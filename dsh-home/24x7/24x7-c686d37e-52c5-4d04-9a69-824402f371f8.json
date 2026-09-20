@@ -1,0 +1,30 @@
+{
+  "id": "24x7-c686d37e-52c5-4d04-9a69-824402f371f8",
+  "status": "running",
+  "project": "D:\\dipcatcher",
+  "localRoot": "/Users/vaithianathan/.dsh/ssh-workspaces/me@100.116.120.51/D_dipcatcher",
+  "ssh": {
+    "user": "me",
+    "hostname": "100.116.120.51",
+    "alias": "ah-remote",
+    "remotePath": "D:\\dipcatcher"
+  },
+  "notes": "Remote Windows D: disk",
+  "objective": "24x7 continuous work on D:\\dipcatcher until both bars are honestly proven.\nThis project lives on the Windows SSH host me@100.116.120.51 at D:\\dipcatcher. Bash and file tools are remoted there (D: and other drive letters are first-class). The session cwd is a local stub; do not treat the Mac stub as the repo.\nBar 1 — industry-grade overperformance: beat real production systems on the project's actual quality bars (correctness, tests, latency, reliability, UX, security, operability). Compare against named incumbents, not vibes.\nBar 2 — ultimate SOTA: match or beat the current published state of the art for this domain, with numbers, papers, repos, and rerunnable evals. If the project is not a research artifact, SOTA means the best public implementation of the same product class.\nDo not mark the goal complete until `.dsh-24x7/PROOF.md` exists with both `## Industry-grade` and `## SOTA` sections set to `STATUS: PROVEN`, each citing at least one live URL and a command whose output you captured.\nSelf-praise is not proof. If evidence is missing, keep working. Persist progress in `.dsh-24x7/PROGRESS.md` and `.dsh-24x7/HANDOFF.md` after every meaningful round.",
+  "sessionId": "session-24x7-59506b57-a8b9-47cf-987b-c635e171a97f",
+  "previousSessionIds": [
+    "session-24x7-322c0d39-553f-49e9-9443-a3256b2768ea",
+    "session-24x7-67525d01-a714-4457-bc3a-76913b0921fc",
+    "session-24x7-bdd821b6-7fa8-41c8-b2ed-60a3293af840",
+    "session-24x7-44c1bc42-b496-4cb9-ac9c-424bacf6f92f",
+    "session-24x7-8820dab2-53bf-465e-b926-0aef6a2bead6",
+    "session-24x7-fd69a5ed-b588-4f64-ab6d-116c3c357910",
+    "session-24x7-a251a709-0668-4b9c-a118-41427096efc7",
+    "session-24x7-6185d321-fa03-43aa-8026-373427d6ec36",
+    "session-24x7-b856d91f-4f05-4407-a9b7-085e88c46e1a"
+  ],
+  "createdAt": "2026-09-19T11:38:07.404Z",
+  "migrations": 10,
+  "lastError": null,
+  "updatedAt": "2026-09-20T06:45:44.430Z"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "ah-camel-resilience",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": { "default": "./index.js" }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "command-24x7",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": { "default": "./index.js" }
+  }
+}

@@ -1,0 +1,16 @@
+# Cloudflare named tunnel for harness.artificialhedge.co
+# This Mac's DeepSeek Harness only binds 127.0.0.1:3080. A tunnel is the
+# supported way to put a public hostname in front of it.
+#
+# After `cloudflared tunnel login` and
+# `cloudflared tunnel create artificial-hedge-harness`, replace TUNNEL_ID
+# below with the printed UUID and point credentials-file at the JSON
+# Cloudflare wrote under ~/.cloudflared/.
+
+tunnel: TUNNEL_ID
+credentials-file: /Users/vaithianathan/.cloudflared/TUNNEL_ID.json
+
+ingress:
+  - hostname: harness.artificialhedge.co
+    service: http://127.0.0.1:3080
+  - service: http_status:404

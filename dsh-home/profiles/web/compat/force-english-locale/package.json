@@ -1,0 +1,20 @@
+{
+  "name": "force-english-locale",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./index.js"
+    },
+    "./client": {
+      "default": "./client.js"
+    }
+  },
+  "dsh": {
+    "client": {
+      "inject": ["locale"],
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}

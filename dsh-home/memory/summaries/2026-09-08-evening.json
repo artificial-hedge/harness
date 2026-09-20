@@ -1,0 +1,47 @@
+{
+  "summary": "今晚主要把两个工作区都理了一遍：先做了仓库全面盘点、安全审查和依赖补全，又把 Nautica 的可扩展性、SOTA 证据协议与测试收了尾，最后跑完纸面 CI 并记下前端比例和缺失文件等待办。电脑方面也清掉了 Superset、Multica 和 Docker 的大部分数据，整体进展很扎实，剩下的多是边角修补；Docker 的 root 权限残留暂时只能先放着。",
+  "works": [
+    {
+      "title": "仓库盘点与安全审查",
+      "points": [
+        "检查了 813 个可读跟踪文件和 35 个未跟踪文件",
+        "未修改文件，但发现脏工作树、EVM 依赖和缺失 verifier 等问题",
+        "扩展 `context.md`，补齐模块地图、验证命令和已知缺口"
+      ]
+    },
+    {
+      "title": "Nautica扩展性实现收尾",
+      "points": [
+        "TrialLedger 改为带文件锁的增量尾部索引写入",
+        "两个 runner 使用有界确定性 PBO 路径采样",
+        "补充 22 项测试，并完成 mypy、Ruff 和幂等 smoke 验证"
+      ]
+    },
+    {
+      "title": "SOTA研究协议与门槛建设",
+      "points": [
+        "新增研究 charter、preregistration 和 claim-level fail-closed 协议",
+        "补充 SOTA gates 文档及协议测试",
+        "当前状态为 software_validated，尚未开放 SOTA、promotion 或 live eligibility"
+      ]
+    },
+    {
+      "title": "依赖补全与全量验证",
+      "points": [
+        "在 `service/requirements.txt` 声明 cryptography 和 eth-hash 依赖",
+        "完成全量本地 CI，578 项测试通过、1 项跳过",
+        "记录前端汇率比例错误、Lunar 应用树和 verifier 缺失等待办"
+      ]
+    },
+    {
+      "title": "Mac高负载清理收尾",
+      "points": [
+        "排查了 WindowServer、Superset、Docker、ANECompilerService 等高 CPU 进程",
+        "清理 Superset、Multica 和 Docker 的应用及用户数据",
+        "保留了 Multica 工作区项目，但 Docker 的 root 权限残留仍未处理"
+      ]
+    }
+  ],
+  "generatedAt": 1788885040951,
+  "cached": false
+}

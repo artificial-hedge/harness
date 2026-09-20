@@ -1,0 +1,11 @@
+{
+  "enabled": true,
+  "enableSessionContextDigest": true,
+  "slidingWindowMessages": 64,
+  "truncateToolResults": false,
+  "maxToolResultChars": 50000,
+  "smartThrottleMs": 0,
+  "flatlineDietEnabled": false,
+  "maxDigestLengthChars": 4000,
+  "maxRetries429": 8
+}

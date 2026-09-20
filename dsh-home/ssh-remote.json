@@ -1,0 +1,11 @@
+{
+  "user": "me",
+  "hostname": "100.116.120.51",
+  "alias": "ah-remote",
+  "remotePath": "D:\\dipcatcher",
+  "localRoot": "/Users/vaithianathan/.dsh/ssh-workspaces/me@100.116.120.51/D_dipcatcher",
+  "enabled": false,
+  "forceAll": false,
+  "remoteShell": "git-bash",
+  "updatedAt": "2026-09-20T06:48:22.107Z"
+}

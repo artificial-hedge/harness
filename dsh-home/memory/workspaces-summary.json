@@ -1,0 +1,68 @@
+{
+  "workspaces": [
+    {
+      "path": "/Users/vaithianathan/.dsh/ssh-workspaces/me@100.116.120.51/D_dipcatcher",
+      "name": "D_dipcatcher",
+      "summary": "",
+      "items": [
+        "20:19 Integrated causal GARCH and Realized-GARCH market overlays into backtest risk gating with origin-time resolution, ",
+        "20:57 Named backtest, covariance, Kronos, and Robinhood Plus modules were Ruff-fixed without resetting unrelated work; t",
+        "20:58 Added optional torch to /models backend_availability detection in src/quant_fund/api/app.py; endpoint now reports ",
+        "21:09 Fixed reported mypy issues in scoring, covariance, doctor, and train; broadened scoring origin-mask typing, added "
+      ],
+      "graphTopics": [],
+      "logCount": 4,
+      "dateRange": "2026-09-19 ~ 2026-09-19"
+    },
+    {
+      "path": "/Users/vaithianathan/dipcatcher",
+      "name": "dipcatcher",
+      "summary": "",
+      "items": [
+        "19:38 Implemented PIT-safe feature aggregation: cross-sectional ranks/winsorization/z-scores and market/sector aggregate",
+        "已完成 Dipcatcher 只读安全审计，整理十大风险，首要问题是敏感 API 缺少认证授权以及 MLflow 公开绑定。",
+        "独立安全审计 Canvas 已保存至 `/Users/vaithianathan/.cursor/projects/dipcatcher/canvases/security-red-flags.canvas.tsx`。",
+        "20:35 Completed a read-only quantitative performance and mathematical correctness audit of Dipcatcher; ranked ten findin",
+        "21:46 Completed the quantitative correctness upgrade: repaired causal features, forward-label math, empirical VaR/ES int"
+      ],
+      "graphTopics": [],
+      "logCount": 5,
+      "dateRange": "2026-09-15 ~ 2026-09-19"
+    },
+    {
+      "path": "/Users/vaithianathan/lightspeed",
+      "name": "lightspeed",
+      "summary": "",
+      "items": [
+        "19:20 SOTA 目标第一阶段已落地：新增纸面研究 charter/preregistration JSON、claim-level fail-closed 协议、SOTA gates 文档及 4 项协议测试；验证通过，当前仍仅 sof",
+        "已新增 SOTA charter、preregistration、fail-closed 协议及测试文档，17 项测试与静态检查通过，当前状态仅为 `software_validated`。",
+        "21:38 Ran the full paper-only CI gate, resolved the local urllib3/websockets environment conflicts, confirmed the fronte",
+        "完成全量本地 CI 验证，578 项测试通过、1 项跳过；仅因无关测试文件的三个 Ruff 未使用导入导致仓库级 lint 失败。",
+        "确认前端交易不足提示仍使用错误的 `0.01` 换算比例，且 Lunar 应用树与 verifier 缺失；相关问题已记录在 `context.md`，未扩大本次变更范围。"
+      ],
+      "graphTopics": [],
+      "logCount": 5,
+      "dateRange": "2026-09-08 ~ 2026-09-14"
+    },
+    {
+      "path": "/Users/vaithianathan",
+      "name": "vaithianathan",
+      "summary": "",
+      "items": [
+        "Colima 的 `cabt-arm` 虚拟机因停止卡住被终止，当前已停止且未删除容器、镜像或磁盘数据，可通过 `colima start --profile cabt-arm` 恢复。",
+        "17:11 修复DeepSeek Harness会话压缩配置：确认camelstream/auto在settings.yaml中错误声明262144上下文，而当前会话请求已接近约128k限制，导致压缩来不及触发；将/Users/vaithi",
+        "CPU快照显示10个逻辑核心中，WindowServer约174.9%、Superset约190%、Docker/Colima约191%、ANECompilerService约97.1%、Multica约75.8%，另有ETF Python",
+        "20:50 Removed Superset and Multica application/support data plus Docker Desktop user data and container data; Docker’s r",
+        "22:05 完成Mac显示卡顿诊断：WindowServer权限不足无法直接采样；系统仍有约9.7GB交换区占用、5分钟负载约14、磁盘写入约22–29MB/s；Apple M4内置显示与热状态正常；127.0.0.1:3080响应约2ms"
+      ],
+      "graphTopics": [],
+      "logCount": 5,
+      "dateRange": "2026-09-08 ~ 2026-09-09"
+    }
+  ],
+  "graph": {
+    "topics": [],
+    "links": []
+  },
+  "generatedAt": 1789874119013
+}

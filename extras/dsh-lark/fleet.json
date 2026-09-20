@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "bots": {
+    "default": {
+      "name": "default",
+      "bridgeProfile": "default",
+      "dshProfile": "dsh-lark",
+      "dshHome": "/Users/vaithianathan/.dsh",
+      "enabled": true,
+      "createdAt": "2026-09-02T11:44:22.345Z",
+      "updatedAt": "2026-09-02T11:44:22.345Z"
+    }
+  }
+}

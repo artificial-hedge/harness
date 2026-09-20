@@ -1,0 +1,31 @@
+#!/bin/zsh
+set -euo pipefail
+
+service_label="co.artificialhedge.dsh-web"
+service_target="gui/$(id -u)/${service_label}"
+launch_agent="$HOME/Library/LaunchAgents/${service_label}.plist"
+dsh_log="${DSH_HOME:-$HOME/.dsh}/dsh-web.log"
+
+if ! launchctl print "$service_target" >/dev/null 2>&1; then
+  launchctl bootstrap "gui/$(id -u)" "$launch_agent"
+fi
+
+startup_url="$(rg '^dsh web: http://127\.0\.0\.1:[0-9]+/\?token=' "$dsh_log" 2>/dev/null | tail -1 | sed -E 's/^dsh web: ([^ ]+).*/\1/' || true)"
+if [[ -z "$startup_url" ]] || ! launchctl print "$service_target" 2>/dev/null | rg -q 'state = running'; then
+  previous_url="$startup_url"
+  launchctl kickstart -k "$service_target"
+  for _ in {1..100}; do
+    startup_url="$(rg '^dsh web: http://127\.0\.0\.1:[0-9]+/\?token=' "$dsh_log" 2>/dev/null | tail -1 | sed -E 's/^dsh web: ([^ ]+).*/\1/' || true)"
+    [[ -n "$startup_url" && "$startup_url" != "$previous_url" ]] && break
+    sleep 0.1
+  done
+fi
+
+if [[ -z "$startup_url" ]]; then
+  echo "Artificial Hedge Harness did not publish its authenticated startup URL." >&2
+  echo "Check $dsh_log and $HOME/.dsh/dsh-web.err." >&2
+  exit 1
+fi
+
+open "$startup_url"
+echo "Opened the authenticated Artificial Hedge Harness in the default browser."

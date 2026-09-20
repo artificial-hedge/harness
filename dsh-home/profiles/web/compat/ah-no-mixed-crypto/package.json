@@ -1,0 +1,8 @@
+{
+  "name": "ah-no-mixed-crypto",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": { "default": "./index.js" }
+  }
+}

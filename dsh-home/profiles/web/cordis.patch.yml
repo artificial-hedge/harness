@@ -1,0 +1,261 @@
+# Your patch layer for this dsh profile, applied after every bundle layer:
+# a top-level YAML array of loader patch entries (id-targeted config
+# overrides, disables, and insert lists; `!!js` expressions allowed).
+- id: agent-presets
+  # Use the user-owned high-throughput Cordis preset for sessions created after
+  # this profile starts. Existing sessions retain their original preset.
+  config:
+    default: cordis-max
+
+- id: system-prompt
+  config:
+    persona: |-
+      You are Solar Frontier, Artificial Hedge's coding, research, and operations agent. Your working directory is {{cwd}}.
+
+      Work intensely. Do not stop at a sketch, a summary, or a "good enough" outline when the task needs a finished artifact. Prefer complete files, concrete commands, and explicit next steps over short commentary. Use the full output budget: the visible answer should be at least as substantial as the work requires, and typically longer than the prompt that asked for it. Never pad with filler.
+
+      Reasoning contract: think internally at the selected effort, then write a complete external answer. Internal reasoning is for deciding; the external answer is what Artificial Hedge keeps. If a tool can verify something, use it instead of guessing.
+
+      You are running on the Artificial Hedge Harness (DeepSeek Harness under the hood). Lunar is the default agent composition: every capability is a plugin row. Do not mention DeepSeek branding to the user unless they ask about the underlying stack.
+- id: web
+  name: '@deepseek-ai/dsh-web'
+  config:
+    searchProvider: modsearch
+    fetchProvider: local
+- id: web-search-deepseek
+  name: '@deepseek-ai/dsh-web-search-deepseek'
+  disabled: false
+
+# These packages are installed for upgradeability, but their published builds
+# target APIs newer than DSH 0.1.2-rc.1 and fail during module loading.
+- id: dsh-websearch
+  name: '@240xu/dsh-websearch'
+  disabled: true
+- id: dsh-evolve-modes
+  name: '@graysilver/dsh-evolve-modes'
+  disabled: true
+
+# Persist the strongest reasoning level CamelStream publishes. The think-level
+# plugin validates this against live model metadata before each request.
+- id: think-level
+  name: '@creait/dsh-think-level'
+  config:
+    defaults:
+      - provider: camelstream
+        model: auto
+        effort: max
+
+# Keep every tool visible in the catalog. Intense company use should not hide
+# browser, notebook, or memory schemas behind tool_search.
+- id: tool-disclosure
+  name: '@creait/dsh-tool-disclosure'
+  config:
+    defer: []
+
+# CamelStream accounts have 10 concurrent HTTP streams. Extra fan-out waits
+# in a FIFO queue instead of 503ing the router. Logical delegation can still
+# be wider than 10; only live generation is capped.
+- id: gen-limit
+  name: '@creait/dsh-gen-limit'
+  config:
+    limits:
+      - provider: camelstream
+        model: auto
+        max: 10
+    queueTimeoutMs: 300000
+    maxQueued: 256
+
+# CodeGraph uses a self-healing platform shim. The absolute path avoids PATH
+# differences between the host process and spawned tool calls.
+- id: tool-codegraph
+  name: '@m1khal3v/dsh-tool-codegraph'
+  config:
+    executable: '/Users/vaithianathan/.dsh/profiles/web/node_modules/@colbymchenry/codegraph/npm-shim.js'
+
+# Fold large MCP schemas out of ordinary prompts and expand them on demand via
+# mcp_list/mcp_call. All registered MCP servers remain available.
+- id: dsh-mcp-adapter
+  name: '@aiwayds/dsh-mcp-adapter'
+  config:
+    prefix: mcp__
+    keep: []
+    servers: []
+    descriptionLimit: 320
+
+# Mount the user-owned custom-agent roster and durable follow-up tools.
+- id: dsh-subagent-registry
+  name: '@aiwayds/dsh-subagent-registry'
+  config:
+    resume: auto
+
+# Permit larger, explicit repository context packs while remaining below the
+# 262k-token class context window after system/tool overhead.
+- id: dsh-context-pack
+  name: '@mkaliezz/dsh-context-pack'
+  disabled: true
+
+- insert:
+    - id: dsh-context-pack-compat
+      name: './compat/dsh-context-pack.mjs'
+      config:
+        maxFiles: 200
+        maxTotalBytes: 400000
+        maxFileBytes: 100000
+        maxInjectedBytes: 400000
+
+# Keep MULTIVERS's 429 retry resilience but disable its token-saving diet and
+# artificial inter-request delay because context and throughput are priorities.
+- id: dsh-multivers
+  name: '@aydin0411/dsh-multivers'
+  disabled: true
+
+- insert:
+    - id: dsh-multivers-compat
+      name: './compat/dsh-multivers.mjs'
+      config:
+        enabled: true
+        enableSessionContextDigest: true
+        slidingWindowMessages: 64
+        truncateToolResults: false
+        maxToolResultChars: 50000
+        smartThrottleMs: 0
+        flatlineDietEnabled: false
+        maxDigestLengthChars: 4000
+        maxRetries429: 8
+
+# Bridge a local MCPHub when it is running; the plugin remains loaded and
+# reconnects automatically when MCPHub is started later.
+- id: mcphub
+  name: '@dong-victor/dsh-mcphub'
+  config:
+    baseUrl: 'http://127.0.0.1:3000'
+    group: ''
+    serverName: mcphub
+    announceToAgent: true
+    toolCallTimeoutMs: 120000
+    reconnect:
+      enabled: true
+      initialDelayMs: 500
+      maxDelayMs: 30000
+      maxAttempts: 20
+
+# Structured Google Scholar search, abstracts, bibliometrics, and CSV export.
+- id: scholar-lab
+  name: '@junma11/dsh-scholar-lab'
+
+# ModSearch adds native search, X search, focused page reading, and its
+# settings card. Its provider selection is paired with the web row above.
+- id: modsearch
+  name: '@liustack/modsearch'
+  config:
+    searchProvider: true
+    xSearch: true
+    readPage: true
+    settingsCard: true
+    providerTimeoutMs: 55000
+
+# Re-enable the bundled compaction path on the host as a fallback. The agent
+# preset isolate is the live auto-compactor; these rows stay available for
+# /compact and overflow recovery.
+- id: compaction-basic
+  disabled: false
+  config:
+    auto: true
+    thresholdRatio: 0.5
+    retainRatio: 0.12
+    maxTokens: 16384
+    compactionRetries: 2
+    summarizationProvider: camelstream
+    summarizationModel: auto
+- id: command-compact
+  disabled: false
+- id: tool-result-pruner
+  disabled: false
+
+# Hide the official DeepSeek catalog. This deployment is CamelStream-only
+# (shown as Artificial Hedge / Solar Frontier). Official routes need a
+# DEEPSEEK_API_KEY and would otherwise appear as dead picker entries.
+- id: llm-deepseek
+  disabled: true
+
+# Official whale + "deepseek HARNESS" occupy the sidebar brand slots.
+# Company occupants cannot win while this row is enabled.
+- id: ui-brand-official
+  disabled: true
+
+# Short session titles: three words, not a sentence.
+- id: session-title
+  config:
+    fallbackMaxWords: 3
+    fallbackMaxBytes: 28
+    maxTitleBytes: 48
+- id: session-title-llm
+  config:
+    targetWords: 3
+    targetCjkCharacters: 8
+    maxInputBytes: 4096
+    maxOutputTokens: 32
+    timeoutMs: 60000
+
+# Keep English for built-in and third-party client dictionaries.
+- insert:
+    - id: force-english-locale
+      name: './compat/force-english-locale/index.js'
+
+# Pin CamelStream auto, map speed/effort tiers, and raise the output budget.
+- insert:
+    - id: ah-seat
+      name: './compat/ah-seat/index.js'
+      config:
+        speed: intense
+        thinking: max
+        reasoningMode: both
+
+# Never send encrypted reasoning/compaction from more than one fleet backend.
+# camelstream/auto can pair azure on one turn and meta on the next; mixed
+# signatures 400 the request. Strip replay blobs on every outbound LLM call.
+- insert:
+    - id: ah-no-mixed-crypto
+      name: './compat/ah-no-mixed-crypto/index.js'
+
+# CamelStream auto-routing 503s arrive as invalid_request_error, so the stock
+# classifier marks them non-retryable. Retry those (not mixed-provider 400s).
+# Also hard-cap concurrent HTTP streams at the account limit of 10.
+- insert:
+    - id: ah-camel-resilience
+      name: './compat/ah-camel-resilience/index.js'
+      config:
+        streamLimit: 10
+
+# CamelStream will not officially pin a fleet model on a standard plan.
+# /fleet records a family preference and redraws when the mixer serves
+# something else. After a few misses the last draw is used.
+- insert:
+    - id: ah-fleet-pin
+      name: './compat/ah-fleet-pin/index.js'
+      config:
+        prefer: auto
+        maxRedraws: 3
+
+# Company identity in the sidebar and conversation hero.
+- insert:
+    - id: artificial-hedge-brand
+      name: './compat/artificial-hedge-brand/index.js'
+
+# Route bash/fs over SSH to the Windows box. Default project is D:\dipcatcher.
+# /ssh on|off|test|path; /24x7 ssh or /24x7 D:\... starts a remoted 24x7 job.
+# Loaded after commands exist; shell/fs wrappers attach if those services are already on ctx.
+- insert:
+    - id: ah-ssh-remote
+      name: './compat/ah-ssh-remote/index.js'
+      config:
+        alias: ah-remote
+        user: me
+        hostname: 100.116.120.51
+        remotePath: 'D:\dipcatcher'
+
+# /24x7 keeps one project moving until industry-grade and SOTA are proven.
+# Mixed-provider 400s start a clean session and resume from .dsh-24x7/.
+- insert:
+    - id: command-24x7
+      name: './compat/dsh-24x7/index.js'

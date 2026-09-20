@@ -1,0 +1,8 @@
+{
+  "name": "artificial-hedge-mcphub",
+  "private": true,
+  "description": "Local MCPHub install for the Artificial Hedge DeepSeek Harness profile",
+  "dependencies": {
+    "@samanhappy/mcphub": "^1.0.37"
+  }
+}

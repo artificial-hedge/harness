@@ -1,0 +1,8 @@
+{
+  "name": "ah-fleet-pin",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": { "default": "./index.js" }
+  }
+}
