@@ -4,6 +4,7 @@ $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $DshHome = Join-Path $Root "dsh-home"
 $ProfileDir = Join-Path $DshHome "profiles\web"
 $DshVersion = "0.1.2-rc.1"
+. (Join-Path $Root "windows-lib.ps1")
 
 function Assert-Node {
   $node = Get-Command node -ErrorAction SilentlyContinue
@@ -32,6 +33,7 @@ function Ensure-Pnpm {
   }
   Write-Host "Installing pnpm (npm/npx often OOM on @deepseek-ai/dsh)..."
   npm install -g pnpm
+  Refresh-SessionPath
   if (-not (Get-Command pnpm -ErrorAction SilentlyContinue)) {
     throw "pnpm install failed. Reopen PowerShell and rerun."
   }
@@ -40,13 +42,17 @@ function Ensure-Pnpm {
 function Install-DshCli {
   $env:PNPM_CONFIG_AUTO_INSTALL_PEERS = "true"
   $env:NODE_OPTIONS = "--max-old-space-size=8192"
+  Ensure-PnpmHomeOnPath
   Write-Host "Installing @deepseek-ai/dsh@$DshVersion globally via pnpm..."
   pnpm add -g "@deepseek-ai/dsh@$DshVersion"
-  $dsh = Get-Command dsh -ErrorAction SilentlyContinue
+  Refresh-SessionPath
+  $dsh = Find-DshCommand -Root $Root
   if (-not $dsh) {
-    throw "dsh is not on PATH after install. Reopen PowerShell and rerun."
+    $bins = @(Get-PnpmGlobalBinDirs)
+    throw "dsh was installed but no shim was found. pnpm bins: $($bins -join '; ')"
   }
-  Write-Host "dsh CLI: $($dsh.Source)"
+  Save-DshCommand -Root $Root -Path $dsh
+  Write-Host "dsh CLI: $dsh"
 }
 
 function Install-WebProfile {

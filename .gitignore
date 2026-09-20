@@ -4,3 +4,4 @@ dsh-home/profiles/web/pnpm-lock.yaml.*
 dsh-home/**/*.log
 dsh-home/**/*.err
 .DS_Store
+.dsh-cmd
