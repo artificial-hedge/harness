@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $DshHome = Join-Path $Root "dsh-home"
@@ -50,8 +50,9 @@ function Install-DshCli {
 }
 
 function Install-WebProfile {
-  if (-not (Test-Path (Join-Path $ProfileDir "package.json"))) {
-    throw "Missing $ProfileDir\package.json — clone is incomplete."
+  $pkg = Join-Path $ProfileDir "package.json"
+  if (-not (Test-Path $pkg)) {
+    throw "Missing $pkg ; clone is incomplete."
   }
   $env:PNPM_CONFIG_AUTO_INSTALL_PEERS = "true"
   $env:NODE_OPTIONS = "--max-old-space-size=8192"
@@ -73,5 +74,5 @@ Write-Host ""
 Write-Host "Install finished. Start with:"
 Write-Host "  powershell -ExecutionPolicy Bypass -File `"$Root\start.ps1`""
 Write-Host ""
-Write-Host "Do not run dsh from $Root — cwd .env plus DSH_* names used to crash boot."
+Write-Host "Do not run dsh from $Root. cwd .env plus DSH_* names used to crash boot."
 Write-Host "start.ps1 sets DSH_HOME and launches from D:\dipcatcher when that folder exists."
