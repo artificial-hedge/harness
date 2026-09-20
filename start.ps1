@@ -13,16 +13,18 @@ Get-Content (Join-Path $Root ".env") | ForEach-Object {
   }
 }
 
-Refresh-SessionPath
-$dsh = Find-DshCommand -Root $Root
-if (-not $dsh) {
-  throw "dsh was not found. Run install.ps1 first."
-}
+$node = Find-Node
+if (-not $node) { throw "node.exe not found. Install Node 22.19+ and rerun." }
+$bin = Assert-DshInstalled -Root $Root
 
 $workspace = if (Test-Path "D:\dipcatcher") { "D:\dipcatcher" } else { (Get-Location).Path }
 Set-Location $workspace
 Write-Host "DSH_HOME=$env:DSH_HOME"
 Write-Host "cwd=$workspace"
-Write-Host "dsh=$dsh"
+Write-Host "node=$node"
+Write-Host "dsh=$bin"
 Write-Host "Starting dsh web on http://127.0.0.1:3080 ..."
-& $dsh web --no-open @args
+& $node $bin web --no-open @args
+if ($LASTEXITCODE -ne 0) {
+  throw "dsh web failed with exit code $LASTEXITCODE"
+}

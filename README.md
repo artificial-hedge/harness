@@ -26,9 +26,9 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 powershell -ExecutionPolicy Bypass -File .\start.ps1
 ```
 
-`install.ps1` checks Node, installs pnpm, installs `dsh@0.1.2-rc.1` globally, then `pnpm install`s `dsh-home\profiles\web`.
+`install.ps1` checks Node, installs pnpm if needed, then `pnpm install`s **local** `@deepseek-ai/dsh@0.1.2-rc.1` in `D:\harness` and the web profile plugins. It does **not** use a global `dsh` PATH shim (that failed on this Windows box).
 
-`start.ps1` sets `DSH_HOME` to this clone’s `dsh-home`, loads CamelStream / Vercel keys, and starts `dsh web --no-open` from `D:\dipcatcher` when that folder exists.
+`start.ps1` runs `node node_modules\@deepseek-ai\dsh\lib\bin.js web --no-open` with `DSH_HOME` set to this clone's `dsh-home`, from `D:\dipcatcher` when that folder exists.
 
 Open the URL it prints, including `?token=...`. Choose workspace `D:\dipcatcher`. Model is CamelStream `auto` (Solar Frontier). Official DeepSeek is disabled on purpose.
 
