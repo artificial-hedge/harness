@@ -16,6 +16,7 @@ Get-Content (Join-Path $Root ".env") | ForEach-Object {
 $node = Find-Node
 if (-not $node) { throw "node.exe not found. Install Node 22.19+ and rerun." }
 $bin = Assert-DshInstalled -Root $Root
+Assert-DshRuntime -Root $Root
 
 $workspace = if (Test-Path "D:\dipcatcher") { "D:\dipcatcher" } else { (Get-Location).Path }
 Set-Location $workspace
@@ -25,6 +26,10 @@ Write-Host "node=$node"
 Write-Host "dsh=$bin"
 Write-Host "Starting dsh web on http://127.0.0.1:3080 ..."
 & $node $bin web --no-open @args
-if ($LASTEXITCODE -ne 0) {
-  throw "dsh web failed with exit code $LASTEXITCODE"
+$code = $LASTEXITCODE
+if ($code -ne 0) {
+  Write-Host ""
+  Write-Host "dsh web failed with exit code $code"
+  Write-Host "Scroll up for Cannot find package. Then: git pull, delete D:\harness\node_modules, rerun install.ps1."
+  exit $code
 }

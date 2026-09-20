@@ -26,7 +26,17 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 powershell -ExecutionPolicy Bypass -File .\start.ps1
 ```
 
-`install.ps1` checks Node, downloads a real `tools\pnpm.exe` (it will not use npm's broken `pnpm.ps1`), then `pnpm install`s **local** `@deepseek-ai/dsh@0.1.2-rc.1` in `D:\harness` and the web profile plugins.
+`install.ps1` checks Node, downloads a real `tools\pnpm.exe` (it will not use npm's broken `pnpm.ps1`), then `pnpm install`s **local** `@deepseek-ai/dsh@0.1.2-rc.1` in `D:\harness` and the web profile plugins. The CLI tree is **hoisted** so Node ESM can see peers such as `@deepseek-ai/cordis-plugin-group` (those are runtime imports, even though npm listed them as peers / CLI `devDependencies`).
+
+If you already ran an older install and `start.ps1` dies with `ERR_MODULE_NOT_FOUND`, pull and rebuild the CLI tree:
+
+```powershell
+cd D:\harness
+git pull
+Remove-Item -Recurse -Force node_modules, pnpm-lock.yaml -ErrorAction SilentlyContinue
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+powershell -ExecutionPolicy Bypass -File .\start.ps1
+```
 
 `start.ps1` runs `node node_modules\@deepseek-ai\dsh\lib\bin.js web --no-open` with `DSH_HOME` set to this clone's `dsh-home`, from `D:\dipcatcher` when that folder exists.
 

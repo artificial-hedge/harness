@@ -70,6 +70,38 @@ function Assert-DshInstalled {
   return $bin
 }
 
+function Assert-DshRuntime {
+  param([string]$Root)
+  $nm = Join-Path $Root "node_modules\@deepseek-ai"
+  $need = @(
+    "dsh",
+    "dsh-app-boot",
+    "cordis-plugin-group",
+    "dsh-web-app",
+    "dsh-host-webserver",
+    "dsh-host-frontend-static",
+    "dsh-shell-env",
+    "dsh-system-prompt",
+    "dsh-llm"
+  )
+  $missing = @()
+  foreach ($n in $need) {
+    $pkg = Join-Path $nm (Join-Path $n "package.json")
+    if (-not (Test-Path $pkg)) { $missing += $n }
+  }
+  if ($missing.Count -gt 0) {
+    throw ("Missing runtime packages: {0}. Delete node_modules and rerun install.ps1." -f ($missing -join ", "))
+  }
+}
+
+function Remove-Tree {
+  param([string]$Path)
+  if (Test-Path $Path) {
+    Write-Host "Removing $Path"
+    Remove-Item $Path -Recurse -Force
+  }
+}
+
 function Install-BundledPnpm {
   param([string]$Root)
   $tools = Join-Path $Root "tools"

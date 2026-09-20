@@ -5,7 +5,6 @@ $DshHome = Join-Path $Root "dsh-home"
 $ProfileDir = Join-Path $DshHome "profiles\web"
 . (Join-Path $Root "windows-lib.ps1")
 
-$env:PNPM_CONFIG_AUTO_INSTALL_PEERS = "false"
 $env:NODE_OPTIONS = "--max-old-space-size=8192"
 
 function Assert-Node {
@@ -35,9 +34,18 @@ function Install-LocalDsh {
     throw "Missing $pkg ; clone is incomplete."
   }
   Write-Host "Installing @deepseek-ai/dsh locally into $Root ..."
+  Remove-Tree (Join-Path $Root "node_modules")
+  Remove-Tree (Join-Path $Root "pnpm-lock.yaml")
   Push-Location $Root
   try {
-    Invoke-Native $Pnpm @("install", "--config.auto-install-peers=false")
+    $env:PNPM_CONFIG_AUTO_INSTALL_PEERS = "true"
+    Invoke-Native $Pnpm @(
+      "install",
+      "--config.auto-install-peers=true",
+      "--config.node-linker=hoisted",
+      "--config.shamefully-hoist=true",
+      "--config.strict-peer-dependencies=false"
+    )
   } finally {
     Pop-Location
   }
@@ -45,6 +53,7 @@ function Install-LocalDsh {
   if (-not (Test-Path $bin)) {
     throw "pnpm install finished but $bin is missing."
   }
+  Assert-DshRuntime -Root $Root
   Write-Host "dsh entry: $bin"
 }
 
@@ -54,9 +63,16 @@ function Install-WebProfile {
   if (-not (Test-Path $pkg)) {
     throw "Missing $pkg ; clone is incomplete."
   }
+  $marker = Join-Path $ProfileDir "node_modules"
+  if (Test-Path $marker) {
+    Write-Host "Web profile already installed at $ProfileDir, skipping."
+    Write-Host "Delete that node_modules folder if you want a full plugin reinstall."
+    return
+  }
   Write-Host "Installing web profile plugins into $ProfileDir ..."
   Push-Location $ProfileDir
   try {
+    $env:PNPM_CONFIG_AUTO_INSTALL_PEERS = "false"
     Invoke-Native $Pnpm @("install", "--config.auto-install-peers=false")
   } finally {
     Pop-Location
