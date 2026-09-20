@@ -5,3 +5,4 @@ dsh-home/**/*.log
 dsh-home/**/*.err
 .DS_Store
 .dsh-cmd
+tools/*.exe

@@ -28,23 +28,6 @@ then close and reopen PowerShell.
   Write-Host "Node $raw at $node"
 }
 
-function Ensure-Pnpm {
-  Refresh-SessionPath
-  $pnpm = Find-Pnpm
-  if ($pnpm) {
-    Write-Host "pnpm at $pnpm"
-    return $pnpm
-  }
-  Write-Host "Installing pnpm with npm..."
-  Invoke-Native "npm" @("install", "-g", "pnpm")
-  Refresh-SessionPath
-  $pnpm = Find-Pnpm
-  if (-not $pnpm) {
-    throw "pnpm install finished but pnpm.cmd was not found."
-  }
-  return $pnpm
-}
-
 function Install-LocalDsh {
   param([string]$Pnpm)
   $pkg = Join-Path $Root "package.json"
@@ -81,11 +64,12 @@ function Install-WebProfile {
 }
 
 Assert-Node
-$pnpm = Ensure-Pnpm
+$pnpm = Install-BundledPnpm -Root $Root
+Write-Host "pnpm at $pnpm"
 Install-LocalDsh -Pnpm $pnpm
 Install-WebProfile -Pnpm $pnpm
 
 Write-Host ""
 Write-Host "Install finished. Start with:"
 Write-Host "  powershell -ExecutionPolicy Bypass -File `"$Root\start.ps1`""
-Write-Host "This install does not use a global dsh PATH shim."
+Write-Host "This install does not use npm's pnpm.ps1 or a global dsh PATH shim."
