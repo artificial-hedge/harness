@@ -1,48 +1,49 @@
 # Artificial Hedge Harness snapshot
 
-Portable copy of the live DeepSeek Harness (`dsh` 0.1.2-rc.1) as customized on this Mac for Artificial Hedge (Solar Frontier / CamelStream). Taken 2026-09-20 from `~/.dsh`, `~/.local/lib/node_modules/@deepseek-ai/dsh`, launch agents, and API keys.
+Portable copy of the live DeepSeek Harness (`dsh` 0.1.2-rc.1) as customized for Artificial Hedge (Solar Frontier / CamelStream).
 
-The **running** host is still `~/.dsh` on `127.0.0.1:3080`. This folder is a full snapshot, not a replacement of that install.
+## Why `git clone` does not just run
 
-## Layout
+A fresh clone is **not** a working install. These are the actual blockers:
 
-| Path | What it is |
-|---|---|
-| `.env` | CamelStream, Vercel AI Gateway, DSH browser secret, MCPHub admin/JWT |
-| `dsh-home/` | `~/.dsh` home: `settings.yaml`, `.credentials.yaml`, Lunar preset, `/24x7`, SSH remote, MCPHub, web profile + `compat/` plugins |
-| `dsh-home/profiles/web/compat/` | Company plugins: brand, seat, mixed-crypto strip, Camel resilience, fleet pin, SSH, `/24x7` |
-| `dsh-home/.agent-presets/cordis-max/` | Lunar agent (Solar Frontier persona, compaction, delegation) |
-| `vendor/@deepseek-ai/dsh/` | Installed CLI package (with its `node_modules`) |
-| `bin/dsh` | Run this snapshot (`DSH_HOME` = `dsh-home/`) |
-| `bin/dsh-web-max` | Live-system wrapper (still points at `~/.local/bin` / `~/.dsh`) |
-| `bin/artificial-hedge-harness` | Opens the live authenticated UI |
-| `bin/dsh-web-from-this-copy` | Boot **this** copy’s web profile |
-| `launchagents/` | `co.artificialhedge.{dsh-web,mcphub,dipcatcher-sync}` as installed |
-| `extras/dsh-tui`, `extras/dsh-lark` | Side homes (tiny) |
+1. **`node_modules` are not in git.** `vendor/@deepseek-ai/dsh` is only the CLI stubs. The web profile plugins are also missing until `pnpm install`.
+2. **`npx` / `npm install @deepseek-ai/dsh` often dies with heap OOM.** Use **pnpm** and pin **0.1.2-rc.1**.
+3. **The web profile used to be locked to `darwin` / `arm64`.** Windows `pnpm install` then skipped or broke native addons (onnx, sharp). That lock is now `win32`/`x64` as well.
+4. **`bin/dsh` is a zsh script.** PowerShell and cmd cannot run it. Use `install.ps1` / `start.ps1`.
+5. **`dsh` refuses any `DSH_*` name inside a `.env` file.** Putting `DSH_BROWSER_SESSION_SECRET` in `.env` and launching from the clone directory crashes boot. That key lives in `launch-env.ps1` now.
+6. **Node must be `^22.19` or `>=24`.** “Node 22” below 22.19 fails the engine check.
 
-## Keys in `.env`
+## Windows 10 (the intended path)
 
-- `CAMELSTREAM_API_KEY` / `CAMEL_API_KEY` — CamelStream live key (also in `dsh-home/.credentials.yaml`)
-- `AI_GATEWAY_API_KEY` and aliases — Vercel AI Gateway (`vck_…`)
-- `DSH_BROWSER_SESSION_SECRET` — browser cookie grant
-- `ADMIN_PASSWORD` / `JWT_SECRET` — MCPHub
+In **PowerShell as the user who will run it** (not cmd):
 
-## Run this copy
-
-```bash
-cd /Users/vaithianathan/lspeed
-source .env
-./bin/dsh --version
-./bin/dsh-web-from-this-copy
+```powershell
+winget install Git.Git OpenJS.NodeJS.LTS
+# reopen PowerShell, then:
+git clone https://github.com/artificial-hedge/harness.git D:\harness
+cd D:\harness
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+powershell -ExecutionPolicy Bypass -File .\start.ps1
 ```
 
-Default model is CamelStream `auto` (shown as Solar Frontier). Official DeepSeek catalog is disabled in `cordis.patch.yml`.
+`install.ps1` checks Node, installs pnpm, installs `dsh@0.1.2-rc.1` globally, then `pnpm install`s `dsh-home\profiles\web`.
 
-## Not copied (runtime bulk, not harness code)
+`start.ps1` sets `DSH_HOME` to this clone’s `dsh-home`, loads CamelStream / Vercel keys, and starts `dsh web --no-open` from `D:\dipcatcher` when that folder exists.
 
-- `~/.dsh/ssh-workspaces` (~1.1G Windows `D:\dipcatcher` clone)
-- `~/.dsh/sessions` (chat transcripts)
-- `~/.dsh/shop` (plugin marketplace cache)
-- `~/.dsh/models`, `storages`, logs
+Open the URL it prints, including `?token=...`. Choose workspace `D:\dipcatcher`. Model is CamelStream `auto` (Solar Frontier). Official DeepSeek is disabled on purpose.
 
-Ask if you want those rsynced in too.
+Keep that PowerShell window open. Bind is loopback only. From another machine:
+
+```powershell
+ssh -L 3080:127.0.0.1:3080 me@100.116.120.51
+```
+
+## Keys
+
+- `.env` — CamelStream, Vercel AI Gateway, MCPHub (no `DSH_*` names)
+- `launch-env.ps1` — `DSH_BROWSER_SESSION_SECRET` and `DSH_HOME`
+- `dsh-home/.credentials.yaml` — CamelStream for the harness itself
+
+## Mac (this machine)
+
+The live host is still `~/.dsh` on `127.0.0.1:3080`. This folder is a snapshot, not a replacement.

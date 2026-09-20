@@ -2,12 +2,15 @@ packages:
   - .
 
 nodeLinker: hoisted
-autoInstallPeers: false
+autoInstallPeers: true
 supportedArchitectures:
   os:
     - darwin
+    - win32
+    - linux
   cpu:
     - arm64
+    - x64
   libc:
     - current
 minimumReleaseAgeExclude:

@@ -70,7 +70,7 @@
 - id: tool-codegraph
   name: '@m1khal3v/dsh-tool-codegraph'
   config:
-    executable: '/Users/vaithianathan/.dsh/profiles/web/node_modules/@colbymchenry/codegraph/npm-shim.js'
+    executable: './node_modules/@colbymchenry/codegraph/npm-shim.js'
 
 # Fold large MCP schemas out of ordinary prompts and expand them on demand via
 # mcp_list/mcp_call. All registered MCP servers remain available.
